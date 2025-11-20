@@ -61,10 +61,6 @@ public class HashTable<K,V> implements SimpleMap<K,V>{
             value = value;
         }
 
-
-
-
-
     }
 
     @Override
@@ -73,8 +69,9 @@ public class HashTable<K,V> implements SimpleMap<K,V>{
         if(key==null) {
             return null;
         }
-
-
+        V value=null;
+        
+        return value;
        //key.getValue and logicalize from there??
 
         //I'm just super confused on how to traverse the items in the HashTable and then logicalize for that...
@@ -88,6 +85,8 @@ public class HashTable<K,V> implements SimpleMap<K,V>{
         }
         //traverse the table.
 
+        return true;
+
 
     }
 
@@ -99,11 +98,7 @@ public class HashTable<K,V> implements SimpleMap<K,V>{
         }
         if(key == key) {
             key = null;
-
         }
-
-
-
     }
 
 
