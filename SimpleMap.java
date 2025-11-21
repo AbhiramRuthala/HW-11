@@ -1,3 +1,5 @@
+package hash;
+
 /**
  * Interface for a generic key-value pair data-structure
  * @author Mark Floryan
