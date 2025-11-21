@@ -1,7 +1,7 @@
 // Name: Abhiram Ruthala
 // Computing ID: kas4kj@virginia.edu
 // Homework Name: HW11-HashTables
-// Resources used:
+// Resources used: Claude 4.5 Sonnet
 
 /**
  * Hash Table implementation.
@@ -56,9 +56,14 @@ public class HashTable<K,V> implements SimpleMap<K,V>{
         if(key==null || value==null) {
              new HashNode<K,V>(key,value);
         }
-
-        if(key == key) {
-            value = value;
+        if(key.hashCode() != 0) {
+            int index = key.hashCode() % table.length;
+            if (table[index] == null) {
+                HashNode<K, V> temp = table[index];
+            } else {
+                V sense = table[index].getValue();
+                sense = value;
+            }
         }
 
     }
@@ -68,10 +73,14 @@ public class HashTable<K,V> implements SimpleMap<K,V>{
         /* TODO: IMPLEMENT THIS METHOD */
         if(key==null) {
             return null;
+        } else {
+            int index = key.hashCode() % table.length;
+            if (table[index] == null) {
+                return null;
+            } else {
+                return table[index].getValue();
+            }
         }
-        V value=null;
-        
-        return value;
        //key.getValue and logicalize from there??
 
         //I'm just super confused on how to traverse the items in the HashTable and then logicalize for that...
@@ -82,10 +91,18 @@ public class HashTable<K,V> implements SimpleMap<K,V>{
         /* TODO: IMPLEMENT THIS METHOD */
         if(key==null) {
             return false;
+        }else {
+            int index = key.hashCode() % table.length;
+            if (table[index] == null) {
+                return false;
+            } else {
+                return true;
+            }
         }
-        //traverse the table.
 
-        return true;
+
+
+        //traverse the table.
 
 
     }
@@ -95,9 +112,13 @@ public class HashTable<K,V> implements SimpleMap<K,V>{
         /* TODO: IMPLEMENT THIS METHOD */
         if(key==null) {
             return;
-        }
-        if(key == key) {
-            key = null;
+        }else {
+            int index = key.hashCode() % table.length;
+            if (table[index] == null) {
+                return;
+            } else {
+                table[index] = null;
+            }
         }
     }
 
