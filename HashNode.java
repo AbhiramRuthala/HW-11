@@ -1,3 +1,5 @@
+package hash;
+
 @SuppressWarnings("unchecked")
 public class HashNode<K, V> {
 
