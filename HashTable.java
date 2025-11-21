@@ -1,3 +1,5 @@
+package hash;
+
 // Name: Abhiram Ruthala
 // Computing ID: kas4kj@virginia.edu
 // Homework Name: HW11-HashTables
