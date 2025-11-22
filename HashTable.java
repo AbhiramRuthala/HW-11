@@ -159,6 +159,11 @@ public class HashTable<K,V> implements SimpleMap<K,V> {
                 if(table[index].getKey().equals(key)) {
                     table[index] = null;
                     size--;
+                    HashNode<K,V> temp = table[index];
+                    table[index] = null;
+
+                    insert(temp.getKey(), temp.getValue());
+
                 }
 
                 index = (index+1)%initialCapacity;
