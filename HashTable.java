@@ -41,7 +41,7 @@ public class HashTable<K,V> implements SimpleMap<K,V> {
         /* TODO: IMPLEMENT THIS METHOD */
         this.initialCapacity = capacity;
         this.size = 0;
-        
+
         this.table = (HashNode<K,V>[]) new HashNode<?,?>[initialCapacity];
 
         /*
@@ -66,23 +66,28 @@ public class HashTable<K,V> implements SimpleMap<K,V> {
 
         int index2 = Math.abs(key.hashCode()) % table.length;
         int originalIndex = index2;
-
-        if(table[index2]==null) {
-            table[index2] = new HashNode<K, V>(key,value);
-            initialCapacity++;
-        }
+//
+//        if(table[index2]==null) {
+//            table[index2] = new HashNode<K, V>(key,value);
+//            size++;
+//        }
 
         while(table[index2] != null) {
             if(table[index2].getKey().equals(key)) {
                 table[index2].setValue(value);
             }
-            index2++;
-            
+            index2 =  (index2 + 1) % table.length;
+
             if(index2 == originalIndex) {
                 //learn how to double size.
+                initialCapacity*=2;
+                insert(key, value);
                 return;
             }
         }
+
+        table[index2] = new HashNode<>(key,value);
+        size++;
 
     }
 
@@ -91,7 +96,7 @@ public class HashTable<K,V> implements SimpleMap<K,V> {
         /* TODO: IMPLEMENT THIS METHOD */
         if(key==null) {
             return null;
-        } else {
+        }
             int index = Math.abs(key.hashCode()) % table.length;
             int originalIndex = index;
             if (table[index] == null) {
@@ -110,7 +115,6 @@ public class HashTable<K,V> implements SimpleMap<K,V> {
                 }
             }
 
-        }
         return null;
        //key.getValue and logicalize from there??
 
@@ -122,12 +126,9 @@ public class HashTable<K,V> implements SimpleMap<K,V> {
         /* TODO: IMPLEMENT THIS METHOD */
         if(key==null) {
             return false;
-        }else {
+        }
             int index = Math.abs(key.hashCode()) % table.length;
             int originalIndex = index;
-            if (table[index] == null) {
-                return false;
-            }
 
             while(table[index] !=null) {
                 if(table[index].getKey().equals(key)) {
@@ -140,8 +141,6 @@ public class HashTable<K,V> implements SimpleMap<K,V> {
                 }
             }
 
-        }
-
         return false;
 
         //traverse the table.
@@ -153,15 +152,20 @@ public class HashTable<K,V> implements SimpleMap<K,V> {
         /* TODO: IMPLEMENT THIS METHOD */
         if(key==null) {
             return;
-        } else {
-            int index = Math.abs(key.hashCode()) % table.length;
-            if (table[index] == null) {
-                return;
-            } else {
-                table[index] = null;
-                initialCapacity--;
-            }
         }
+            int index = Math.abs(key.hashCode()) % table.length;
+            int originalIndex = index;
+            while(table[index] != null) {
+                if(table[index].getKey().equals(key)) {
+                    table[index] = null;
+                    size--;
+                }
+
+                index = (index+1)%initialCapacity;
+                if(index == originalIndex) {
+                    break;
+                }
+            }
     }
 
 
