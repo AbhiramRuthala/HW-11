@@ -28,7 +28,8 @@ public class HashTable<K,V> implements SimpleMap<K,V> {
      */
 
     /* YOU WILL LIKELY WANT MORE PRIVATE VARIABLES HERE */
-    private int initialCapacity = 0;
+    private int initialCapacity;
+    private int size;
     private HashNode<K,V>[] table;
 
 
@@ -38,7 +39,9 @@ public class HashTable<K,V> implements SimpleMap<K,V> {
 
     public HashTable(int capacity) {  // constructor sets capacity to given value
         /* TODO: IMPLEMENT THIS METHOD */
-        initialCapacity = capacity;
+        this.initialCapacity = capacity;
+        this.size = 0;
+        
         this.table = (HashNode<K,V>[]) new HashNode<?,?>[initialCapacity];
 
         /*
@@ -50,7 +53,7 @@ public class HashTable<K,V> implements SimpleMap<K,V> {
          */
     }
 
-    public int getSize() { return initialCapacity; }
+    public int getSize() { return size; }
 
     // insert() adds a new key/value pair if the key is not found, otherwise it replaces
     //    the existing key's value
@@ -62,6 +65,7 @@ public class HashTable<K,V> implements SimpleMap<K,V> {
         }
 
         int index2 = Math.abs(key.hashCode()) % table.length;
+        int originalIndex = index2;
 
         if(table[index2]==null) {
             table[index2] = new HashNode<K, V>(key,value);
@@ -73,6 +77,11 @@ public class HashTable<K,V> implements SimpleMap<K,V> {
                 table[index2].setValue(value);
             }
             index2++;
+            
+            if(index2 == originalIndex) {
+                //learn how to double size.
+                return;
+            }
         }
 
     }
@@ -84,6 +93,7 @@ public class HashTable<K,V> implements SimpleMap<K,V> {
             return null;
         } else {
             int index = Math.abs(key.hashCode()) % table.length;
+            int originalIndex = index;
             if (table[index] == null) {
                 return null;
             }
@@ -93,7 +103,11 @@ public class HashTable<K,V> implements SimpleMap<K,V> {
                     return table[index].getValue();
 
                 }
-                index++;
+                index = (index+1)%initialCapacity;
+
+                if(originalIndex == index) {
+                    break;
+                }
             }
 
         }
@@ -110,6 +124,7 @@ public class HashTable<K,V> implements SimpleMap<K,V> {
             return false;
         }else {
             int index = Math.abs(key.hashCode()) % table.length;
+            int originalIndex = index;
             if (table[index] == null) {
                 return false;
             }
@@ -118,7 +133,11 @@ public class HashTable<K,V> implements SimpleMap<K,V> {
                 if(table[index].getKey().equals(key)) {
                     return true;
                 }
-                index++;
+                index = (index+1)%initialCapacity;
+
+                if(originalIndex == index) {
+                    break;
+                }
             }
 
         }
