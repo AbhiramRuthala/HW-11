@@ -3,7 +3,7 @@ package hash;
 // Name: Abhiram Ruthala
 // Computing ID: kas4kj@virginia.edu
 // Homework Name: HW11-HashTables
-// Resources used: Claude 4.5 Sonnet
+// Resources used: Claude 4.5 Sonnet, ChatGPT 5
 
 /**
  * Hash Table implementation.
@@ -163,6 +163,7 @@ public class HashTable<K,V> implements SimpleMap<K,V> {
                     table[index] = null;
 
                     insert(temp.getKey(), temp.getValue());
+                    index = (index+1)%initialCapacity;
 
                 }
 
