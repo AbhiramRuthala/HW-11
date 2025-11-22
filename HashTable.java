@@ -11,6 +11,8 @@ package hash;
  * @param <K>
  * @param <V>
  */
+
+@SuppressWarnings("unchecked")
 public class HashTable<K,V> implements SimpleMap<K,V> {
 
     private static final int INITIAL_CAP = 5;  // a default initial capacity (set low for initial debugging)
@@ -26,7 +28,7 @@ public class HashTable<K,V> implements SimpleMap<K,V> {
      */
 
     /* YOU WILL LIKELY WANT MORE PRIVATE VARIABLES HERE */
-    private int initialCapacity;
+    private int initialCapacity = 0;
     private HashNode<K,V>[] table;
 
 
@@ -48,7 +50,7 @@ public class HashTable<K,V> implements SimpleMap<K,V> {
          */
     }
 
-    public int getSize() { return currentCapacity; }
+    public int getSize() { return initialCapacity; }
 
     // insert() adds a new key/value pair if the key is not found, otherwise it replaces
     //    the existing key's value
@@ -59,14 +61,18 @@ public class HashTable<K,V> implements SimpleMap<K,V> {
              new HashNode<K,V>(key,value);
         }
 
-        int index2 = key.hashCode() % table.length;
+        int index2 = Math.abs(key.hashCode()) % table.length;
 
         if(table[index2]==null) {
             table[index2] = new HashNode<K, V>(key,value);
-        } else {
+            initialCapacity++;
+        }
+
+        while(table[index2] != null) {
             if(table[index2].getKey().equals(key)) {
                 table[index2].setValue(value);
             }
+            index2++;
         }
 
     }
@@ -77,16 +83,21 @@ public class HashTable<K,V> implements SimpleMap<K,V> {
         if(key==null) {
             return null;
         } else {
-            int index = key.hashCode() % table.length;
+            int index = Math.abs(key.hashCode()) % table.length;
             if (table[index] == null) {
                 return null;
-            } else {
+            }
+
+            while(table[index] !=null) {
                 if(table[index].getKey().equals(key)) {
                     return table[index].getValue();
+
                 }
-                return null;
+                index++;
             }
+
         }
+        return null;
        //key.getValue and logicalize from there??
 
         //I'm just super confused on how to traverse the items in the hash.HashTable and then logicalize for that...
@@ -98,16 +109,21 @@ public class HashTable<K,V> implements SimpleMap<K,V> {
         if(key==null) {
             return false;
         }else {
-            int index = key.hashCode() % table.length;
+            int index = Math.abs(key.hashCode()) % table.length;
             if (table[index] == null) {
                 return false;
-            } else {
+            }
+
+            while(table[index] !=null) {
                 if(table[index].getKey().equals(key)) {
                     return true;
                 }
-                return false;
+                index++;
             }
+
         }
+
+        return false;
 
         //traverse the table.
 
@@ -119,11 +135,12 @@ public class HashTable<K,V> implements SimpleMap<K,V> {
         if(key==null) {
             return;
         } else {
-            int index = key.hashCode() % table.length;
+            int index = Math.abs(key.hashCode()) % table.length;
             if (table[index] == null) {
                 return;
             } else {
                 table[index] = null;
+                initialCapacity--;
             }
         }
     }
