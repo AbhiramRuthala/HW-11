@@ -11,8 +11,6 @@ package hash;
  * @param <K>
  * @param <V>
  */
-
-@SuppressWarnings("unchecked")
 public class HashTable<K,V> implements SimpleMap<K,V> {
 
     private static final int INITIAL_CAP = 5;  // a default initial capacity (set low for initial debugging)
@@ -60,13 +58,14 @@ public class HashTable<K,V> implements SimpleMap<K,V> {
         if(key==null || value==null) {
              new HashNode<K,V>(key,value);
         }
-        if(key.hashCode() != 0) {
-            int index = key.hashCode() % table.length;
-            if (table[index] == null) {
-                HashNode<K, V> temp = table[index];
-            } else {
-                V sense = table[index].getValue();
-                sense = value;
+
+        int index2 = key.hashCode() % table.length;
+
+        if(table[index2]==null) {
+            table[index2] = new HashNode<K, V>(key,value);
+        } else {
+            if(table[index2].getKey().equals(key)) {
+                table[index2].setValue(value);
             }
         }
 
@@ -82,7 +81,10 @@ public class HashTable<K,V> implements SimpleMap<K,V> {
             if (table[index] == null) {
                 return null;
             } else {
-                return table[index].getValue();
+                if(table[index].getKey().equals(key)) {
+                    return table[index].getValue();
+                }
+                return null;
             }
         }
        //key.getValue and logicalize from there??
@@ -100,14 +102,14 @@ public class HashTable<K,V> implements SimpleMap<K,V> {
             if (table[index] == null) {
                 return false;
             } else {
-                return true;
+                if(table[index].getKey().equals(key)) {
+                    return true;
+                }
+                return false;
             }
         }
 
-
-
         //traverse the table.
-
 
     }
 
@@ -116,7 +118,7 @@ public class HashTable<K,V> implements SimpleMap<K,V> {
         /* TODO: IMPLEMENT THIS METHOD */
         if(key==null) {
             return;
-        }else {
+        } else {
             int index = key.hashCode() % table.length;
             if (table[index] == null) {
                 return;
