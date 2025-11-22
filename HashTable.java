@@ -11,6 +11,8 @@ package hash;
  * @param <K>
  * @param <V>
  */
+
+@SuppressWarnings("unchecked")
 public class HashTable<K,V> implements SimpleMap<K,V> {
 
     private static final int INITIAL_CAP = 5;  // a default initial capacity (set low for initial debugging)
